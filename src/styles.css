@@ -1,0 +1,61 @@
+:root {
+  --bg: #0b1020;
+  --panel: #141b2f;
+  --panel-2: #10182b;
+  --border: #22304d;
+  --text: #e6eefc;
+  --muted: #99a7c2;
+  --accent: #5aa9ff;
+  --green: #46d38e;
+  --red: #f27070;
+  --amber: #ffc861;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(6px);
+  background: rgba(11,16,32,0.75);
+  border-bottom: 1px solid var(--border);
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.row { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 900px) {
+  .row { grid-template-columns: 1.2fr 2fr; }
+}
+
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.card h2 { margin: 0 0 10px; font-size: 16px; }
+.muted { color: var(--muted); }
+.btn { background: #1a2440; color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 12px; cursor: pointer; }
+.btn:hover { background: #213056; }
+.btn.small { padding: 6px 10px; font-size: 12px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.input, .select { width: 100%; padding: 8px 10px; color: var(--text); background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; }
+.label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+
+.summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (min-width: 700px) { .summary { grid-template-columns: repeat(4, 1fr); } }
+
+.stat .caption { font-size: 11px; color: var(--muted); }
+.stat .value { font-size: 18px; margin-top: 4px; }
+
+.pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--panel-2); border-radius: 999px; padding: 6px 10px; font-size: 12px; color: var(--muted); }
+
+.settings { position: fixed; right: 16px; bottom: 16px; width: 340px; max-width: calc(100vw - 32px); background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.settings h3 { margin: 0 0 8px; }
+.range { width: 100%; }
+
+a { color: #7fb0ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
