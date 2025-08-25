@@ -107,13 +107,38 @@ export default function App() {
   const dca = useMemo(() => (priceSeries ? computeDCA(priceSeries, schedule, Number(amount)) : { timeline: [], summary: {} }), [priceSeries, schedule, amount])
   const sentimentColor = sentiment >= 60 ? 'var(--green)' : sentiment <= 40 ? 'var(--red)' : 'var(--amber)'
 
-  return (
+  // Auto sentiment fetch
+useEffect(() => {
+  if (sentimentMode !== 'auto') return;
+  let cancelled = false;
+  async function loadSentiment() {
+    try {
+      const resp = await fetch('/api/sentiment');
+      const data = await resp.json();
+      if (cancelled) return;
+      if (typeof data.score === 'number') setSentiment(data.score);
+      if (Array.isArray(data.items) && data.items.length) {
+        setNewsItems(data.items.map(it => ({
+          title: it.title,
+          source: it.source || 'News',
+          url: it.link || '#'
+        })));
+      }
+    } catch (e) {
+      // keep previous values
+    }
+  }
+  loadSentiment();
+  const id = setInterval(loadSentiment, 1000 * 60 * 30); // refresh every 30 min
+  return () => { cancelled = true; clearInterval(id); }
+}, [sentimentMode]);
+return (
     <MotionConfig reducedMotion="user">
       <header>
         <div className="container" style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
           <div style={{display:'flex', alignItems:'center', gap:10}}>
             <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=035" alt="BTC" style={{height:28, width:28}}/>
-            <h1 style={{fontSize:18, margin:0}}>Bitcoin Sentiment + DCA Dashboard</h1>
+            <h1 style={{fontSize:18, margin:0}}>Bitcoin Sentiment + DCA Dashboard — BTC is Freedom</h1>
           </div>
           <div style={{display:'flex', gap:8}}>
             <button className="btn" onClick={() => window.location.reload()}><RefreshCw size={16}/> Refresh</button>
